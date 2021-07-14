@@ -1,0 +1,37 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="AccountList" access="global" >
+    
+    
+    <aura:attribute name="AccountIns" type="Account" 
+                    default="{'sObjectType':'Account'}" />
+    <aura:attribute name="recordId" type="String" />
+    
+    <!-- Handler to call function when page is loaded initially -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+    
+    <!-- If payment status is Cleared-->
+            <aura:if isTrue="{!(v.AccountIns.Payment_Status__c == 'Cleared')}">
+                <div class="slds-align_absolute-center"  style="border-radius: 5px; background-color:green;color:white">
+                     <div class="slds-p-around_medium">
+                		<h1 style="font-size:1vw;font-weight: bold;font-family:sans-serif">{!v.AccountIns.Payment_Status__c}</h1>
+                	 </div>     
+                </div>
+            </aura:if>
+    <!-- If payment status is Pending-->
+     <aura:if isTrue="{!(v.AccountIns.Payment_Status__c == 'Pending')}">
+                <div class="slds-align_absolute-center"  style="border-radius: 5px; background-color:yellow">
+                     <div class="slds-p-around_medium">
+                        <h1 style="font-size:1vw;font-weight: bold;font-family:sans-serif">{!v.AccountIns.Payment_Status__c}</h1>
+                     </div>     
+                </div>
+            </aura:if>
+    
+    <!-- If payment status is On Hold-->
+     <aura:if isTrue="{!(v.AccountIns.Payment_Status__c == 'On Hold')}">
+                <div class="slds-align_absolute-center"  style="border-radius: 5px; background-color:red">
+                     <div class="slds-p-around_medium">
+                        <h1 style="font-size:1vw;font-weight: bold;font-family:sans-serif;color:white">{!v.AccountIns.Payment_Status__c}</h1>
+                     </div>     
+                </div>
+            </aura:if>
+    
+</aura:component>

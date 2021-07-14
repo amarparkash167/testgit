@@ -1,0 +1,12 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+   <aura:attribute name="message" type="String" description="Message content, can be HTML" default="Help"/>
+   <aura:attribute name="type" type="String" description="Message type, can be error/warning/info/success" default="info"/>
+    
+   <div class="{!'slds-notify slds-notify_alert slds-theme-alert--texture slds-theme--'+v.type+' slds-size_2-of-6'}" style="border:none;">
+       <lightning:icon iconName="{!'utility:'+v.type}" size="small" alternativeText="{!v.type}" class="slds-icon_container"/> &nbsp;
+       <span class="">
+           <aura:unescapedHtml value="{!v.message}"/>
+       </span>    
+   </div> 
+    
+</aura:component>

@@ -1,0 +1,22 @@
+<apex:page showHeader="false" sidebar="false" standardController="Deliverable__c">
+
+ <apex:includeScript value="/lightning/lightning.out.js" />
+ 
+  <div id="recordId" />
+ 
+ <script>
+ var id= '{!$CurrentPage.parameters.id}';
+ console.log('::Id: '+ id);
+
+ $Lightning.use("c:TaskAssignment_DeliverableBtn", function() {
+ $Lightning.createComponent("c:TaskAssignment_create_edit_Task",
+ {
+ "recordId" : id
+ },
+ "recordId",
+ function(cmp) {
+ console.log('Component created, do something cool here');
+ });
+ });
+ </script>
+</apex:page>

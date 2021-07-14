@@ -1,0 +1,229 @@
+<template>
+    <article class="slds-card">
+         <div class="slds-card__header slds-grid">
+           <header class="slds-media slds-media_center slds-has-flexi-truncate">
+               <div class="slds-media__figure">
+                   <lightning-icon icon-name="standard:account"></lightning-icon>
+               </div>
+               <div class="slds-media__body">
+                   <h2 class="slds-page-header__title slds-text-heading_large slds-text-title_caps slds-text-title_bold">Account Details
+                   </h2>
+               </div>
+           </header>
+         </div>
+           <div class="slds-card__body slds-card__body_inner">
+                <div class="slds-grid slds-gutters">
+                   <div class="slds-col slds-size_1-of-3">
+                       <article class="slds-card slds-card_boundary">
+                           <div class="slds-card__header slds-grid">
+                               <header class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_small">
+                                   <div class="slds-media__figure">
+                                       <lightning-icon icon-name="standard:work_plan"></lightning-icon>
+                                   </div>
+                                   <div class="slds-media__body">  
+                                       <h2 class="slds-card__header-title slds-truncate slds-card__header-link">Plan Name</h2>
+                                   </div>
+                               </header>
+                           </div>
+                           <div class="slds-card__body slds-card__body_inner ">
+                               <p class="slds-text-heading_small">Onstaff Plan</p>
+                               <div class="slds-grid slds-gutters">
+                               <div class="slds-col slds-size_1-of-3">
+                               <p class="slds-truncate">Gold</p>
+                               </div>
+                               <div class="slds-col slds-size_1-of-3">
+                                <p class="slds-truncate">Silver</p>
+                               </div>
+                               <div class="slds-col slds-size_1-of-3">
+                               <p class="slds-truncate">Platinum</p>
+                               </div>
+                               </div>
+                               
+                           </div>
+                       </article>
+                   </div>
+                   <div class="slds-col slds-size_1-of-3">
+                       <article class="slds-card slds-card_boundary">
+                           <div class="slds-card__header slds-grid">
+                               <header class="slds-media slds-media_center slds-has-flexi-truncate  slds-m-bottom_small">
+                                   <div class="slds-media__figure">
+                                       <lightning-icon icon-name="standard:event"></lightning-icon>
+                                   </div>
+                                   <div class="slds-media__body">  
+                                       <h2 class="slds-card__header-title slds-truncate slds-card__header-link">Subscription Start Date</h2>
+                                   </div>
+                               </header>
+                           </div>
+                           <div class="slds-card__body slds-card__body_inner slds-m-bottom_x-large">
+                               <p class="slds-text-heading_small">Starting 9/30/2015</p>
+                           </div>
+                       </article>
+                   </div>
+                   <div class="slds-col slds-size_1-of-3">
+                       <article class="slds-card slds-card_boundary">
+                           <div class="slds-card__header slds-grid">
+                               <header class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_small">
+                                   <div class="slds-media__figure">
+                                       <lightning-icon icon-name="standard:event"></lightning-icon>
+                                   </div>
+                                   <div class="slds-media__body">  
+                                       <h2 class="slds-card__header-title slds-truncate slds-card__header-link">Subscription End Date</h2>
+                                   </div>
+                               </header>
+                           </div>
+                           <div class="slds-card__body slds-card__body_inner slds-m-bottom_x-large">
+                               <p class="slds-text-heading_small">Closing 9/30/2015</p>
+                           </div>
+                       </article>
+                   </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_large">
+                   <div class="slds-col slds-size_1-of-3">
+                       <article class="slds-card slds-card_boundary">
+                           <div class="slds-card__header slds-grid">
+                               <header class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_small">
+                                   <div class="slds-media__figure">
+                                       <lightning-icon icon-name="custom:custom85"></lightning-icon>
+                                   </div>
+                                   <div class="slds-media__body">  
+                                       <h2 class="slds-card__header-title slds-truncate slds-card__header-link">Sales Inquiry</h2>
+                                   </div>
+                               </header>
+                           </div>
+                           <div class="slds-card__body slds-card__body_inner ">   
+                                <button class="slds-button slds-button_brand slds-p-horizontal_large accbutton" onclick={openModal}>Contact Sales</button>
+
+                           </div>
+                       </article>
+                   </div>
+                   <div class="slds-col slds-size_1-of-3">
+                       <article class="slds-card slds-card_boundary">
+                           <div class="slds-card__header slds-grid">
+                               <header class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_small">
+                                   <div class="slds-media__figure">
+                                       <lightning-icon icon-name="custom:custom17"></lightning-icon>
+                                   </div>
+                                   <div class="slds-media__body">  
+                                       <h2 class="slds-card__header-title slds-truncate slds-card__header-link">Billing Inquiry</h2>
+                                   </div>
+                               </header>
+                           </div>
+                           <div class="slds-card__body slds-card__body_inner ">
+                               <a class="slds-button slds-button_brand slds-p-horizontal_large accbutton" href="#">Billing Inquiry</a>
+                        
+                           </div>
+                       </article>
+                   </div>
+                   <div class="slds-col slds-size_1-of-3">
+                       <article class="slds-card slds-card_boundary">
+                           <div class="slds-card__header slds-grid">
+                               <header class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_small">
+                                   <div class="slds-media__figure">
+                                       <lightning-icon icon-name="standard:high_velocity_sales"></lightning-icon>
+                                   </div>
+                                   <div class="slds-media__body">  
+                                       <h2 class="slds-card__header-title slds-truncate slds-card__header-link">Rates</h2>
+                                   </div>
+                               </header>
+                           </div>
+                           <div class="slds-card__body slds-card__body_inner ">
+                               <div class="slds-grid slds-gutters">
+                               <div class="slds-col slds-size_1-of-3">
+                               <p class="slds-truncate">Admin</p>
+                               <p class="slds-truncate">$312</p>
+                               </div>
+                               <div class="slds-col slds-size_1-of-3">
+                                <p class="slds-truncate">Consultant</p>
+                                <p class="slds-truncate">$312</p>
+                               </div>
+                               <div class="slds-col slds-size_1-of-3">
+                               <p class="slds-truncate">Architect</p>
+                               <p class="slds-truncate">$312</p>
+                               </div>
+                               </div>
+                               
+                                
+                           </div>
+                       </article>
+                   </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_large">
+                   <div class="slds-col slds-size_1-of-3">
+                       <article class="slds-card slds-card_boundary">
+                           <div class="slds-card__header slds-grid">
+                               <header class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_small">
+                                   <div class="slds-media__figure">
+                                       <lightning-icon icon-name="standard:record_update"></lightning-icon>
+                                   </div>
+                                   <div class="slds-media__body">  
+                                       <h2 class="slds-card__header-title slds-truncate slds-card__header-link ">Upgrade your plan</h2>
+                                   </div>
+                               </header>
+                           </div>
+                           <div class="slds-card__body slds-card__body_inner ">
+                               <a class="slds-button slds-button_brand slds-p-horizontal_large accbutton" href="#">Run Flow</a>
+                        
+                           </div>
+                       </article>
+                   </div>
+                   <div class="slds-col slds-size_1-of-3">
+                       <article class="slds-card slds-card_boundary">
+                           <div class="slds-card__header slds-grid">
+                               <header class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_small">
+                                   <div class="slds-media__figure">
+                                       <lightning-icon icon-name="doctype:word"></lightning-icon>
+                                   </div>
+                                   <div class="slds-media__body">  
+                                       <h2 class="slds-card__header-title slds-truncate slds-card__header-link">SOW Link</h2>
+                                   </div>
+                               </header>
+                           </div>
+                           <div class="slds-card__body slds-card__body_inner ">
+                               <a class="slds-button slds-button_brand slds-p-horizontal_large accbutton" href="#">Generate PDF</a>
+            
+                        <template if:true={modal}>
+
+            
+                      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+<div class="slds-modal__container">
+<header class="slds-modal__header">
+<button onclick={closemodal}  class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+    <lightning-icon icon-name="utility:close"></lightning-icon>
+<span class="slds-assistive-text">Close</span>
+</button>
+<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Contact Sales</h2>
+</header>
+<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+    <div class="slds-form-element">
+        <div class="slds-form-element__control slds-m-bottom_medium">
+        <input type="text" id="text-input-id-1" placeholder="Enter Your First Name" required="" class="slds-input modinput" />
+        </div>
+        <div class="slds-form-element__control slds-m-bottom_medium">
+        <input type="text" id="text-input-id-2" placeholder="Enter Your Last Name" required="" class="slds-input modinput" />
+        </div>
+        <div class="slds-form-element__control">
+        <input type="text" id="text-input-id-3" placeholder="Enter Your Email" required="" class="slds-input modinput" />
+        </div>
+
+        
+    </div>
+    
+</div>
+<footer class="slds-modal__footer">
+<button onclick={closemodal} class="slds-button slds-button_neutral">Cancel</button>
+<button class="slds-button slds-button_brand">Save</button>
+</footer>
+</div>
+</section>
+<div class="slds-backdrop slds-backdrop_open"></div></template>
+                           </div>
+                       </article>
+                   </div>
+                </div>
+                
+                
+       </div>
+       </article>
+   </template>
+   
+

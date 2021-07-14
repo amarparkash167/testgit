@@ -1,0 +1,34 @@
+<apex:page showHeader="false" sidebar="false" standardController="Deliverable__c">
+
+<!-- jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"/>
+<!-- Lightning Component Addition to VF Page File-->
+<apex:includeScript value="/lightning/lightning.out.js" />
+ 
+ <div id="recordId" />
+ 
+<script> 
+ $(document).ready(function(){
+// Get Deliverable Id 
+
+var deliverableId= '{!$CurrentPage.parameters.id}';
+
+ $Lightning.use("c:TaskAssignment_DeliverableBtn", function() {
+ console.log('::Deliverable Id Again: '+deliverableId); 
+ $Lightning.createComponent("c:TaskAssignment_create_edit_Task",
+ {
+ "recordId" : deliverableId
+ },
+ "recordId",
+ function(cmp) {
+ console.log('Component created, do something cool here');
+ });
+ }); 
+ 
+ });//document.ready(); 
+</script> 
+
+ 
+  
+
+</apex:page>

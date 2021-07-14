@@ -1,0 +1,54 @@
+<apex:page showHeader="false" sidebar="false" standardController="Task__c">
+
+<!-- Javascript Client Query Toolkit  -->
+<script src="/soap/ajax/42.0/connection.js" type="text/javascript"/> 
+<script src="/soap/ajax/42.0/apex.js" type="text/javascript"/> 
+<!-- jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"/>
+<!-- Lightning Component Addition to VF Page File-->
+<apex:includeScript value="/lightning/lightning.out.js" />
+ 
+ <div id="recordId" />
+ 
+<script> 
+ $(document).ready(function(){
+// Get Deliverable Id 
+
+var deliverableId='';
+ try{ 
+sforce.connection.sessionId='{!$Api.Session_ID}';
+if("{!$CurrentPage.parameters.id}"){
+var query = "Select Id,Name, Deliverable__c from Task__c Where Id ='" +"{!$CurrentPage.parameters.id}"+"' limit 1"; 
+var result= sforce.connection.query(query); 
+var record = result.getArray('records'); 
+
+deliverableId= record[0].Deliverable__c;
+console.log('::Deliverable Id: '+deliverableId); 
+}
+} 
+catch(e){ 
+console.log('An Error has Occured. Error:' +e); 
+}
+
+ 
+
+
+ $Lightning.use("c:TaskAssignment_DeliverableBtn", function() {
+ console.log('::Deliverable Id Again: '+deliverableId); 
+ $Lightning.createComponent("c:TaskAssignment_create_edit_Task",
+ {
+ "recordId" : deliverableId
+ },
+ "recordId",
+ function(cmp) {
+ console.log('Component created, do something cool here');
+ });
+ }); 
+ 
+ });//document.ready(); 
+</script> 
+
+ 
+  
+
+</apex:page>

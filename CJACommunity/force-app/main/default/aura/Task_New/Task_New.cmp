@@ -1,0 +1,179 @@
+<aura:component controller="Task_New_Controller" implements="lightning:actionOverride,force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <ltng:require scripts="{!$Resource.Lodash}"/>
+    
+    <!--Style-->
+    <aura:html tag="style">
+        .slds-modal__container{
+        height : 100%;
+        width: 95%;
+        max-width: 95rem;
+        }
+        .modal-body{
+        height : 80% !important;
+        max-height: 100% !important;
+        }
+        <!--
+        .customFooter{
+        display: inline !important;
+        }-->
+    </aura:html>     
+    
+    <c:TaskAssignment_Header deliverable="{!v.deliverableRecord}" />    
+    <aura:attribute name="task_Instance" type="Task__c" default="{'sObjectType':'Task__c','Status__c':'Not Started', 'Priority__c':'Normal'}" />
+    <!-- Task Picklist Value -->
+    <!-- <aura:attribute name="pickListValues" type="List"/> -->
+    <!-- Task Assignment Value -->     
+    <aura:attribute name="taskAssignmentMap" type="Map" />
+    <!-- ProjectIdMapDeliverables Map -->    
+    <aura:attribute name="ProjectMap" type="Map" />
+
+    <aura:attribute name="recordId" type="String" /> <!-- Task Id -->
+
+    <aura:attribute name="deliverableRecord" type="Task__c"/>
+    
+    <aura:attribute name="billableoptions" type="List" default="[]"/>
+    <aura:attribute name="checkboxValue" type="List" default=""/>
+    
+    <!-- Task Picklist "Status" Values -->
+    <aura:attribute name="task_StatusPicklist" type="List" />
+    <!-- Task Picklist "Priority" Values -->
+    <aura:attribute name="task_PriorityPicklist" type="List" />
+    
+    <aura:attribute name="deleteMessage" type="String" default="" />
+    <aura:attribute name="rtaMessage" type="String" default="" />
+    
+    <!-- Register Event passParameters -->
+    <aura:registerEvent name="passParametersToChild" type="c:passParameters"/>
+    <aura:registerEvent name="Add" type="c:TaskAssignment_AddRowEvent"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+ <!--Event handler for Add and Delete Row Event which is execute from Child Component-->   
+    <aura:handler name="DeleteRowEvent" event="c:TaskAssignment_DeleteRowEvent" action="{!c.removeDeletedRow}"/>
+    <aura:handler name="AddRowEvent" event="c:TaskAssignment_AddRowEvent" action="{!c.addRow}"/>
+
+  <!--Aura Attribute for store Task_Assignment__c Object List as Array-->      
+    <aura:attribute name="TaskAssignmentList" type="Task_Assignment__c[]" default="[]"/>
+  <!--Aura Attribute for store Task_Assignment__c Object List as Array-->      
+    <aura:attribute name="TaskAssignDelete_List" type="Task_Assignment__c[]" default="[{ 'sobjectType':'Task_Assignment__c',
+ 																						 'Task__c':'', 'Project_Resource__c': '',
+                                                                                         'Start_Date__c': '', 'End_Date__c':'',
+                                                                                         'Id': '', 'Name': '', 'Status__c':'Not Started'}]"/>
+    
+    <!-- insertRTA return Object -->
+    <aura:attribute name="wrapper_insertRTA" type="object"/>
+<div class="slds-scrollable--x" style="width:100rem;">    
+  <aura:if aura:id="errorFlag" isTrue="false">    
+    <lightning:layoutItem padding="around-small">
+      <c:TaskAssignment_ErrorComponent aura:id="errorComp" type="" message=""/>
+    </lightning:layoutItem>  
+  </aura:if>  
+    
+  <aura:if aura:id="deleteFlag" isTrue="false">    
+    <lightning:layoutItem padding="around-small">
+      <c:TaskAssignment_ErrorComponent aura:id="deleteComp" type="" message=""/>
+    </lightning:layoutItem>  
+  </aura:if>      
+
+<lightning:layoutItem padding="around-small">    
+<lightning:card title="Create Task" aura:id="taskForm_Card">
+  <div class="slds-p-left_medium slds-p-right_medium" >
+
+      <table>
+      <tbody>
+                
+      <lightning:recordEditForm aura:id="taskForm"
+      objectApiName="Task__c"
+      recordId=""  class=""
+      >
+      <lightning:messages/>
+      <tr class="slds-grid"> <!-- slds-text-title_caps -->   
+           <td class="slds-p-around_xx-small"> <lightning:input aura:id="task_name"  label="Name" type="text" value="{!v.task_Instance.Name}" /> </td>
+           <td class="slds-p-around_xx-small slds-size_1-of-7"> <lightning:input aura:id="task_startDate" label="Start Date" onchange="{!c.changeStartDate}" type="date" value="{!v.task_Instance.Start_Date__c}" /> </td>
+           <td class="slds-p-around_xx-small slds-size_1-of-7"> <lightning:input aura:id="task_dueDate" label="Due Date" onchange="{!c.changeEndDate}" type="date" value="{!v.task_Instance.Due_Date__c}" /> </td> 
+  		   <td class="slds-p-around_xx-small slds-size_1-of-8"> <lightning:input aura:id="task_estimatedHrs" label="Estimated Hours" type="number" step="0.01" value="{!v.task_Instance.Estimated_Hours__c}"  /> </td>                                 
+           <td class="slds-p-around_xx-small"> 
+    
+               <lightning:select label="Status" aura:id="task_status" value="{!v.task_Instance.Status__c}" > 
+               <aura:iteration items="{!v.task_StatusPicklist}" var="status">
+                   <option value="{!status.value}" text="{!status.label}" selected="{!status.value}" />
+               </aura:iteration>
+               </lightning:select>
+
+           </td>
+           <td class="slds-p-around_xx-small"> 
+               <lightning:select label="Priority" aura:id="task_priority" value="{!v.task_Instance.Priority__c}"> 
+               <aura:iteration items="{!v.task_PriorityPicklist}" var="priority">
+                   <option value="{!priority.value}" text="{!priority.label}" selected="{!priority.value}"/>
+               </aura:iteration>
+               </lightning:select>                
+           </td>  
+           <td class="slds-p-around_xx-small"> <div class="slds-p-top_large"> <lightning:input aura:id="task_Billable" label="Billable" type="checkbox" checked="{!v.task_Instance.Billable__c}"  /> </div> </td>  
+      </tr>   
+      <tr>   
+          <td class="slds-p-around_xx-small"> <lightning:textarea style="width:350px;" aura:id="task_Description" label="Description" value="{!v.task_Instance.Description__c}" placeholder="Enter task description..." /> </td>
+         <!--  <td class="slds-p-around_xx-small"> <lightning:inputField aura:id="task_billable" fieldName="Billable__c" value="{!v.task_Instance.Billable__c}"  /> </td>  -->             
+           <td class="slds-p-around_xx-small"> <lightning:input style="display:none;" aura:id="task_Id" value="{!v.task_Instance.Id}"  /> </td>
+      </tr> 
+      </lightning:recordEditForm>   
+       </tbody>   
+      </table> 
+  </div>  
+<!--    
+  <div class="slds-p-left_large slds-p-right_medium slds-m-top_medium">
+     <lightning:button variant="brand" type="submit" name="save" label="Save" onclick="{!c.SaveTask}" />
+  </div>   
+-->
+</lightning:card>    
+</lightning:layoutItem>    
+    
+<aura:if isTrue="false" aura:id="taskAssignment_Section">    
+<lightning:layoutItem padding="around-small">    
+<lightning:card title="Task Assignment" aura:id="taskAssignment_Card">
+  <div class="slds-p-left_medium slds-p-right_medium" >
+  
+   <!--Table Part-->
+   <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+   <!--    
+     <thead>
+       <tr class="slds-text-title_caps">
+		   <th>#</th>
+           <th></th>
+           <th></th>
+           <th></th>
+           <th></th>
+       </tr>  
+     </thead>  -->
+     <tbody>
+       <aura:iteration items="{!v.TaskAssignmentList}" var="item1" indexVar="index"> 
+           <c:TaskAssignment_ListTaskAssignment aura:id="cComp" taskId="{!v.recordId}" taskAssignmentInstance="{!item1}" 
+           rowIndex="{!index}" taskAssignmentList="{!v.TaskAssignmentList}" />
+       </aura:iteration>  
+     </tbody>
+   </table>
+   <br/>
+
+  </div>
+<!--
+    <div class="slds-p-left_large slds-p-right_medium slds-m-top_medium">
+        <lightning:button variant="brand" type="submit" name="save" label="Save" onclick="{!c.Save}" />
+    </div> 
+-->    
+</lightning:card>    
+</lightning:layoutItem>
+
+<lightning:layoutItem padding="around-small"> 
+    
+        <div class="slds-align_absolute-center">
+        <!-- Save Button -->
+        <lightning:button aura:id="saveBtn" variant="brand" type="submit" name="save" label="Save" onclick="{!c.SaveAll}"  /> &nbsp;&nbsp;
+        <!-- Cancel Button -->         
+       <!--  <lightning:button aura:id="cancelBtn" variant="brand" type="submit" name="cancel" label="Back" onclick="{!c.redirectToDeliverable}"  />     -->
+        
+        </div> 
+        
+   
+</lightning:layoutItem>    
+  
+</aura:if>
+</div> <!-- End of Scroll -->    
+</aura:component>

@@ -1,0 +1,52 @@
+<template>
+    <canvas class="confettiCanvas" id="canvas" lwc:dom="manual"></canvas>
+    <template if:true={showspinner}>
+        <div class="" style="text-align: center">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+
+    <template if:true={showcomp}>
+        <c-multi-edit-table-timesheet 
+            column-list='{optionsarr}'
+            title='{title}'
+            addrowsitems='{alltasks}'
+            types='{status}'
+            skilltype = '{options}'
+            >
+        </c-multi-edit-table-timesheet>
+    </template>
+
+    <template if:true={showsuccess}>
+            <lightning-card >
+                    <p style="text-align: center;" class="slds-p-horizontal_small">{message}</p>
+                </lightning-card>
+    </template>
+
+ 
+<!-- Another - Example 
+    <c-multi-edit-table 
+        column-list='\[{ "label" : "Fee Name", "apiName" : "FeeName", "type" : "text", "options" : "" }, { "label" : "Amount", "apiName" : "Amount" , "type" : "text", "options" : ""}]'
+        title='Estimated Fees LWC'>
+    </c-multi-edit-table>-->
+    <template if:false={showsuccess}>
+        
+
+        <lightning-button 
+        variant="brand" 
+        label="Save &amp; Submit" 
+        onclick={submit}
+        style="float: right;
+        padding-right: 1%;
+        margin-top: 10px;"></lightning-button>
+
+        <lightning-button 
+        variant="Neutral" 
+        label="Save" 
+        onclick={save}
+        style="float: right;
+        padding-right: 1%;
+        margin-top: 10px;"></lightning-button>
+        
+    </template>
+</template>

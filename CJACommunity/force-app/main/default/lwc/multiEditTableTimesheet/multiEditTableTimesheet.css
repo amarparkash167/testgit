@@ -1,0 +1,24 @@
+.hours{
+    width: 65px !important;
+}
+.billable{
+    text-align: center;
+    width: 1px;
+}
+.tasks{
+    width: 600px;
+}
+.type{
+    width: 250px;
+}
+/*
+.starttime, .endtime{
+    width: 150px !important;
+}
+.tasks, .type{
+    width: 250px !important;
+}
+
+.internalcomments, .externalcomments  {
+    width: 165px;
+} */

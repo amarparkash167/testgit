@@ -1,0 +1,12 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+   <lightning:layout>
+      <lightning:layoutItem>
+          <lightning:icon iconName="standard:task" alternativeText="Add Multiple Tasks"/>
+      </lightning:layoutItem>
+      <lightning:layoutItem padding="horizontal-small">
+      <div class="page-section page-header">
+          <h1>Add Multiple Tasks</h1>
+      </div>    
+      </lightning:layoutItem>       
+   </lightning:layout>
+</aura:component>

@@ -1,0 +1,54 @@
+<apex:component controller="acctTemplt" access="global" >
+    <apex:attribute name="td_Id" type="String" description="Id of the timesheet" assignTo="{!timesheetId}"/>
+    <apex:attribute name="Owner_Id" type="String" description="Id of the Owner" assignTo="{!OwnerId}"/>
+    <style>
+        .header{
+            border: 1px white; color: white; font-size:15px; padding:5px;
+            background-color: #00447e;
+        }
+        
+        .header td{
+        
+            color: white; padding:5px;
+        }
+        
+        td{
+        
+            border-left:0px; border-right:0px; border-bottom:0px; padding:5px;
+        }
+        
+        
+    
+    </style>
+
+    Hello {!user.Manager.Name}<br/>
+    
+    <p><b>{!user.Name}</b> has submitted his timesheet of {!timesheet.Timesheet_Date__c}, which has total <b>{!timesheet.Total_hours_logged__c}</b> working hours </p>
+    
+    <h2>Details of Timesheet are below:</h2>
+ 
+
+
+    <table  border = "1" cellspacing= "0">
+        <tr class = "header">
+            <td >Project - Deliverable</td>
+            <td >Task</td>
+            <td >Billable</td>
+            <td>Estimated Hours</td>
+            <td >Logged Hours</td>
+            <td >Total Logged Hours</td>
+            <td >Comments</td>
+        </tr>
+        <apex:repeat value="{!timesheet_details}" var="o">
+        <tr>
+            <td><b>{!o.Task__r.Project__r.Name}</b><br/>{!o.Task__r.Deliverable_name__c}</td>
+            <td>{!o.Task__r.Name}</td>
+            <td>{!o.Billable__c}</td>
+            <td>{!o.Task__r.Estimated_Hours__c}</td>   
+            <td>{!o.Actual_Hours__c}</td>
+            <td>{!o.Task__r.Total_Hours_Logged__c}</td>
+            <td>{!o.Comments__c}</td>
+        </tr>
+        </apex:repeat>        
+    </table>
+</apex:component>

@@ -1,0 +1,159 @@
+<aura:component controller="CheckoutProcess" implements="lightning:isUrlAddressable,forceCommunity:availableForAllPageTypes,force:appHostable,force:lightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes,force:hasRecordId"  access="global" >
+
+    <aura:attribute name="payment" type="Map"
+         default="{ 	'amount': 0,
+                  		'currency': 'CAD',
+                  		'holderName' : '',
+                        'card' : '',
+                        'cvv': '',
+                        'year': '',
+                        'month': '',
+                        'currencyval' : 'CAD',
+                        'description': '',
+                  		'notes': '',
+                  		'oppName': 'None',
+                  		'invNotes': ''}"/>
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="result" type="String" />
+    <aura:attribute name="amounttoshow" type="String" />
+    <aura:attribute name="currtoshow" type="String" />
+    <aura:attribute name="invoice" type="SObject[]" />
+    <aura:attribute name="invoiceNumber" type="String" />
+    <aura:attribute name="budgetAmount" type="String"/>
+    <aura:attribute name="environmentType" type="String" default="Standard" description="This variable is used to indicate which environment this component is displayed on, f.i. community vs standard lightning" />
+    
+    <lightning:navigation aura:id="navService"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!--{!v.pageReference.state.testAttribute}-->
+    <lightning:layout horizontalAlign="center">
+        <lightning:layoutItem padding="around-small" size="12">
+            <!-- CREATE NEW PAYMENT -->
+            <div aria-labelledby="newpaymentform">
+                <!-- BOXED AREA -->
+                <fieldset class="slds-box slds-align_absolute-centerslds-theme--default slds-container--medium">
+                <legend id="newexpenseform" class="slds-text-heading--small 
+                  slds-p-vertical--medium">
+                  Invoice Payment for {!v.invoiceNumber}
+                </legend>
+          		<div style="padding-bottom: 20px;">
+                    {!v.payment.invNotes}
+                </div>
+                <div class="slds-text-color_error slds-text-align_center">{!v.result}</div>
+				
+                <!-- CREATE NEW PAYMENT FORM -->
+                
+                <form class="slds-form--stacked">                     
+                    <lightning:input type="string" aura:id="expenseform" label="Opportunity"
+                                     name="Opportunity Name"
+                                     value="{!v.payment.oppName}"
+                                     disabled="true"
+                                     style="padding-top: 20px;"/>
+                    
+                    <lightning:input type="Number" aura:id="expenseform" label="Amount"
+                                     name="expenseamount"
+                                     formatter="currency"
+                                     required="true"
+                                     value="{!v.payment.amount}"
+                                     currencyCode="{!v.payment.currency}"
+                                     disabled="true"
+                                     min="1"
+                                     max="{!v.budgetAmount}"
+                                     messageWhenRangeOverflow="You are exceeding the balance amount"
+                                     style="padding-top: 20px;"/>
+                     <lightning:input type="text" aura:id="expenseform" label="Payment Notes"
+                                     name="expenseNotes"
+                                     formatter="text"
+                                     required="false"
+                                     value="{!v.payment.notes}"
+                                     style="padding-top: 20px;"
+                                     />
+                    <lightning:input type="text" aura:id="HolderName" label="Card Holder Name"
+                                     name="HolderName"
+                                     formatter="text"
+                                     placeholder="Name displayed on Card"
+                                     required="false"
+                                     value="{!v.payment.holderName}"
+                                     style="padding-top: 20px;"
+                                     />
+                    <lightning:input aura:id="expenseform" label="Card Number"
+                                     name="card"
+                                     value="{!v.payment.card}"
+                                     placeholder="Card Number"
+                                     pattern="[0-9]{16}"
+                                     required="true"
+                                     style="padding-top: 20px;"/> 
+                    
+                    <!-- <lightning:input aura:id="expenseform" type="string" label="Year"
+                                     name="Card Year"
+                                     required="true"
+                                     value="{!v.payment.year}"
+                                     placeholder="2043"/>
+                    <lightning:input type="string" aura:id="expenseform" label="Expiry Month"
+                                     name="Card Month"
+                                     min="1"
+                                     max="12"
+                                     required="true"
+                                     value="{!v.payment.month}"
+                                     messageWhenRangeUnderflow="Enter card month from 1 to 12"/>
+                    <lightning:input type="string" aura:id="expenseform" label="Card CVV"
+                                     name="Card CVV Code"
+                                     required="true"
+                                     value="{!v.payment.cvv}"
+                                     messageWhenRangeUnderflow="Enter card CVV"/> -->
+                 
+                    <fieldset class="slds-form--compound">
+                      <div class="form-element__group">
+                        <div class="slds-form-element__row">
+                          <div class="slds-form-element slds-size--1-of-3">
+                            <lightning:input type="Number" aura:id="expenseform" label="Expiry Month"
+                                     name="Card Month"
+                                     min="1"
+                                     max="12"
+                                     required="true"
+                                     value="{!v.payment.month}"
+                                     placeholder="MM"
+                                     messageWhenRangeUnderflow="Enter card month from 1 to 12"
+                                     style="padding-top: 20px;"/>
+                          </div>
+                          <div class="slds-form-element slds-size--1-of-3">
+                            <lightning:input aura:id="expenseform" label="Expiry Year"
+                                     name="Card Year"
+                                     required="true"
+                                     value="{!v.payment.year}"
+                                     pattern="[0-9]{4}"
+                                     placeholder="YYYY"
+                                     style="padding-top: 20px;"/>
+                          </div>
+                          <div class="slds-form-element slds-size--1-of-3">
+                            <lightning:input aura:id="expenseform" label="Card CVV"
+                                     name="Card CVV Code"
+                                     required="true"
+                                     value="{!v.payment.cvv}"
+                                     placeholder="3 digit # on the back of card"
+ 									 pattern="[0-9]{3}"
+                                     messageWhenRangeUnderflow="Card CVV"
+                                     style="padding-top: 20px;"/>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <div class="slds-text-align_center">
+                    	<lightning:button label="Submit Payment" 
+                                          class="slds-m-top--medium"
+                                          variant="brand"
+                                          onclick="{!c.clickCreate}"
+                                          />
+                    </div>
+                </form>
+                <!-- / CREATE NEW PAYMENT FORM -->
+          
+              </fieldset>
+              <!-- / BOXED AREA -->
+            </div>
+            <!-- / CREATE NEW PAYMENT -->
+        </lightning:layoutItem>
+    </lightning:layout>
+	    
+</aura:component>

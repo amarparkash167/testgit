@@ -1,0 +1,19 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="accountTicket" access="global" >
+    
+    <aura:attribute name="TicketIns" type="Issue__c" default="{'sObjectType':'Issue__c'}" />
+    <aura:attribute name="recordId" type="String" />
+    
+    <!-- Handler to call function when page is loaded initially -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+    
+    <!-- Show Instructions in Yellow Alert -->
+    <!-- <aura:if isTrue="{!(v.TicketIns.Instructions_on_Ticket__c != NULL)}"> -->
+         <div class="slds-align_absolute-center"  style="border-radius: 5px; background-color:yellow">
+             <div class="slds-p-around_medium">
+                 <h1 style="font-size:18px;font-weight:bold;font-family:sans-serif;text-align:center">Instructions</h1>
+                 <p style="font-size:16px;font-family:sans-serif;text-align:center">{!v.TicketIns.Customer_Account__r.Instructions_on_Ticket__c}</p>
+             </div>     
+         </div>
+    <!-- </aura:if> -->
+    
+</aura:component>

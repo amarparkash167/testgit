@@ -1,0 +1,39 @@
+<template>
+    <canvas class="confettiCanvas" id="canvas" lwc:dom="manual"></canvas>
+    <template if:true={showspinner}>
+        <div class="" style="text-align: center">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+
+    <template if:true={showcomp}>
+
+        <c-multi-edit-table-global 
+            column-list='{optionsarr}'
+            title='Multi Tasks'>
+        </c-multi-edit-table-global>
+
+        <lightning-card  title="Chatter Settings">
+            <lightning-input type="checkbox" label="Post on Chatter (auto)" value={chatterpost} name="chatterpost" checked onchange={handleCheckboxChange}></lightning-input>
+
+            <template if:true={showchatter}>
+                <lightning-input-rich-text
+                    value={richtext}
+                    label='Chatter Post (Additinal Notes)'
+                    placeholder='Chatter Post (Additinal Notes)'
+                    onchange={handleChange}
+                ></lightning-input-rich-text>
+            </template>
+        </lightning-card>
+</template>
+
+<template if:true={showsuccess}>
+    <lightning-card >
+            <p style="text-align: center;" class="slds-p-horizontal_small">{message}</p>
+        </lightning-card>
+</template>
+
+    <lightning-button variant="brand" label="Submit" onclick={submit} style="float: right;
+    padding-right: 1%;
+    margin-top: 10px;"></lightning-button>
+</template>

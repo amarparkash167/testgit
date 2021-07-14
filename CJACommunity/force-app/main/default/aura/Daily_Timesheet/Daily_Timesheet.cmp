@@ -1,0 +1,217 @@
+<!--Parent-->
+<aura:component controller="Timesheet_Controller" Implements="flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes,lightning:actionOverride">
+    <!--Init handler which is call doInit js function on component Load--> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="taskList" type="list"/>
+    <aura:attribute name="taskListAssignment" type="Task__c[]"/> 
+    <!--Aura Attribute for store Timesheet Detail Object List as Array-->   
+    <aura:attribute name="TimesheetDetailList" type="list"/>
+    <aura:attribute name="total" type="Integer"/>
+    <aura:attribute name="status" type="list"/>
+    <aura:attribute name="approval_status" type = "Boolean"/>
+    <aura:attribute name="today" type="Date" />
+    <aura:attribute name="rowId" type="Integer" />
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="record" type="Id" />
+    <aura:attribute name="manager_Id" type = "Boolean"/>
+    <aura:attribute name="timesheet_user" type = "String"/>
+  
+
+    
+    
+    <!--Header Part-->       
+    <div class="slds-page-header">
+        <h1 class="slds-page-header__title">DAILY TIMESHEET</h1>
+        
+        <h3><ui:outputDate value="{!v.today}" /></h3>
+        <h3><ui:outputText value="{!v.RecordId}" /></h3>
+        
+    </div>
+    
+    <aura:if isTrue="{!v.timesheet_user != null}">
+        <lightning:card  title="Timesheet Status">
+                    <p class="slds-p-horizontal_small">
+                        {!v.timesheet_user}
+                    </p>
+                </lightning:card>
+            
+        <aura:set attribute="else">
+            <aura:if isTrue="{!v.approval_status}">
+                
+                <lightning:card  title="Timesheet Status">
+                    <p class="slds-p-horizontal_small">
+                        You are not allowed to modify this Timesheet.<br/>
+                        
+                    </p>
+                </lightning:card>
+                
+                  <div>
+                        <button class="slds-button slds-button_destructive "  onclick="{!c.cancel}">Cancel</button>
+                        
+                    </div>
+                
+                <aura:set attribute="else">
+                    
+                    
+                    <!--Table Part-->          
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer "  > 
+                        <thead>
+                            <tr class="slds-text-title_caps slds-text-title_bold">
+                                
+                                <th scope="col" class ="slds-size_2-of-12">
+                                    <div class="slds-truncate" title="Account Name">Project</div>
+                                </th>
+                                <th scope="col" class ="slds-size_3-of-12">
+                                    <div class="slds-truncate" title="Account Number">Task</div>
+                                </th>
+                                <th scope="col" class ="slds-size_7-of-12">
+                                    <th scope="col" class ="slds-size_1-of-12">
+                                        <div class="slds-truncate" title="Account Number">Billable</div>
+                                    </th>
+                                    
+                                    
+                                    <th scope="col" class ="slds-size_4-of-12">
+                                        <div class="slds-truncate" title="Account Number">Comment</div>
+                                    </th>
+                                    <th scope="col" class ="slds-size_1-of-12">
+                                        <div class="slds-truncate" title="Phone">Hours</div>
+                                    </th>
+                                    
+                                    <th scope="col" class ="slds-size_2-of-12">
+                                        <div class="slds-truncate" title="Phone">Status</div>
+                                    </th>
+                                    <!--<th scope="col" class ="slds-size_4-of-12">
+                                        <div class="slds-truncate" title="Phone">Task Comment</div>
+                                    </th> -->
+                                </th>
+                                
+                            </tr>
+                        </thead>   
+                        <tbody>
+                            <!-- Already Inserted Timesheet Details used for showing and updation -->
+                            <aura:iteration items="{!v.TimesheetDetailList}" var="taskAss">
+                                <tr >
+                                    
+                                    
+                                    <td scope="col" class ="slds-size_2-of-12">
+                                        <div class="slds-truncate" title="Account Name">{!taskAss.Task__r.Deliverables__r.Project__r.Name}<br/>{!taskAss.Task__r.Deliverables__r.Name}</div>
+                                    </td>
+                                    <td scope="col" class ="slds-size_3-of-12">
+                                        <div class="slds-truncate" title="Account Number">{!taskAss.Task__r.Name}</div>
+                                    </td>
+                                    
+                                    <td scope="col" class ="slds-size_7-of-12">
+                                        
+                                        <td scope="col" class ="slds-size_1-of-12 no_boder">
+                                            <ui:inputCheckbox  class="slds-input--small" value = "{!taskAss.Billable__c}" />
+                                        </td>
+                                        
+                                        
+                                        
+                                        <td scope="col" class ="slds-size_4-of-12 no_boder">
+                                            <ui:inputTextArea class="slds-input" value = "{!taskAss.Comments__c}"/>
+                                        </td>
+                                        <td scope="col" class ="slds-size_1-of-12 no_boder">
+                                            <ui:inputText class="slds-input--small" blur = "{!c.calculate}"  value = "{!taskAss.Actual_Hours__c}"/>
+                                        </td>
+                                        
+                                        
+                                        <td id="status" class ="slds-size_2-of-12 no_boder">
+                                            <ui:inputSelect class="single slds-select"  aura:id="InputSelectSingle" value = "{!taskAss.Task__r.Status__c}">
+                                                
+                                                <aura:iteration items="{!v.status}" var="st">
+                                                    <ui:inputSelectOption text="{!st}" ></ui:inputSelectOption>
+                                                </aura:iteration>
+                                            </ui:inputSelect>
+                                        </td>
+                                        <!--<td id="status" class ="slds-size_4-of-12 no_boder">
+                                            <ui:inputTextArea class="slds-input" value = "{!taskAss.Task__r.Comments__c}"/>                        
+                                        </td>-->
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                            
+                            <!-- Create Timesheet Detail -->
+                            <aura:iteration items="{!v.taskListAssignment}" var="taskAss" indexVar="rowCnt">
+                                <tr>
+                                    
+                                    
+                                    <td scope="col" class ="slds-size_2-of-12">
+                                        <div class="slds-truncate" title="Account Name">{!taskAss.Deliverables__r.Project__r.Name}<br/>{!taskAss.Deliverables__r.Name}</div>
+                                    </td>
+                                    
+                                    <td scope="col" class ="slds-size_3-of-12">
+                                        <div class="slds-truncate" title="Account Number">{!taskAss.Name}</div>
+                                        
+                                    </td>
+                                    <td scope="col" class ="slds-size_7-of-12">
+                                        <aura:iteration items="{!v.taskList}" start="{!rowCnt}" end="{!rowCnt + 1}"  var="taskVar">	 
+                                            
+                                            <td scope="col" class ="slds-size_1-of-12 no_boder">
+                                                <ui:inputCheckbox  class="slds-input--small" value = "{!taskVar.Billable__c}" />
+                                            </td>
+                        
+                                            
+                                            <td scope="col" class ="slds-size_4-of-12 no_boder">
+                                                <ui:inputTextArea class="slds-input" value = "{!taskVar.Comments__c}"/>
+                                            </td>
+                                            <td scope="col" class ="slds-size_1-of-12 no_boder">
+                                                <ui:inputText class="slds-input" blur = "{!c.calculate}" value = "{!taskVar.Actual_Hours__c}"/>
+                                            </td>
+                                            
+                                        </aura:iteration>
+                                        <td id="status" class ="slds-size_2-of-12 no_boder">
+                                            <ui:inputSelect class="single slds-select"  aura:id="InputSelectSingle" value = "{!taskAss.Status__c}">
+                                                
+                                                <aura:iteration items="{!v.status}" var="st">
+                                                    <ui:inputSelectOption text="{!st}" ></ui:inputSelectOption>
+                                                </aura:iteration>
+                                              
+                                            </ui:inputSelect>
+                                        </td>
+                                        <!--<td id="status" class ="slds-size_4-of-12 no_boder">
+                                            <ui:inputTextArea class="slds-input" value = "{!taskAss.Comments__c}"/>                        
+                                        </td>-->
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                            <tr class="slds-text-title_caps slds-text-title_bold">
+                                <th scope="col" colspan="2" class ="slds-size_1-of-12">
+                                    <div class="slds-truncate slds-text-align_right" title="Account Name:"></div>
+                                </th>
+                                <th scope="col" colspan = "1" class ="slds-size_1-of-12">
+                                    
+                                    <th scope="col" class ="slds-size_5-of-12 no_boder">
+                                        <div class="slds-truncate slds-text-align_right" title="Account Name:">Total Hours Consumed: </div>
+                                    </th>
+                                    <th scope="col" class ="slds-size_2-of-12 no_boder">
+                                        <div class="slds-truncate slds-text-align_left" title="Phone"><h2 style = "text-weight:40px;" onset="{!c.calculate}">  {!v.total}</h2></div>
+                                    </th>
+                                </th>
+                                
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <!--Save Button which is call Save js function on click -->
+                    <div>
+                        <button class="slds-button slds-button_success"  onclick="{!c.Save}">Save</button>
+                        <button class="slds-button slds-button_brand"  onclick="{!c.Submit}">Submit</button>
+                        <button class="slds-button slds-button_destructive "  onclick="{!c.cancel}">Cancel</button>
+                        
+                    </div>
+                    
+                </aura:set>
+            </aura:if>
+
+     </aura:set>
+                            <div>
+                        <button class="slds-button slds-button_destructive "  onclick="{!c.cancel}">Cancel</button>
+                        
+                    </div>
+    </aura:if>
+    
+    
+</aura:component>

@@ -1,0 +1,243 @@
+<aura:component controller="TestMultiTasksCls" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+	
+    <aura:attribute name="TMT" type="Task__c[]" />
+    <aura:attribute name="flag" type="Boolean" default="True" />
+    <!-- New Code by Farah -->
+    <aura:attribute name="taskRecord" type="Task__c"/>
+    <!-- Deliverable options  for selected Project-->
+    <aura:attribute name="deliverableOptions_Project_1" type="List"/>
+    <aura:attribute name="deliverableOptions_Project_2" type="List"/>
+    <aura:attribute name="deliverableOptions_Project_3" type="List"/>
+    <aura:attribute name="deliverableOptions_Project_4" type="List"/>
+    <aura:attribute name="deliverableOptions_Project_5" type="List"/>
+    
+    <!-- Selected Deliverable option, for selected Project-->
+    <aura:attribute name="selected_Deliverable_1" type="String"/>
+    <aura:attribute name="selected_Deliverable_2" type="String"/>
+    <aura:attribute name="selected_Deliverable_3" type="String"/>
+    <aura:attribute name="selected_Deliverable_4" type="String"/>
+    <aura:attribute name="selected_Deliverable_5" type="String"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <!-- New Code by Farah -->
+	
+    <!--Style-->
+    <aura:html tag="style">
+        <!-- Modified By Farah -->
+        .slds-modal__container{
+        height : 100%;
+        width: 95%;
+        max-width: 120rem;
+        }
+        .modal-body{
+        height : 100% !important;
+        max-height: 100% !important;
+        }
+        <!--
+        .customFooter{
+        display: inline !important;
+        }-->
+    </aura:html> 
+    
+    <div class="slds-modal__content slds-p-around_x-small" style="max-height : 600px; overflow-y:scroll;">
+    <c:AddMultipleTasks_Header/>        
+        <table class="slds-table slds-table_cell-buffer">  
+    <aura:if isTrue="{!v.flag}">
+    <!--Code By Farah -->
+       <div style="display:none;"> 
+           
+       </div>    
+    <!--Code By Farah -->    
+    <lightning:recordEditForm aura:id="recordViewForm1"                                                                 
+                              objectApiName="Task__c"
+                              onsubmit="{!c.handleSubmit1}"
+                              >
+        
+        <div class="slds-grid slds-gutters"> 
+            <div class="slds-col slds-size_1-of-10">
+                <span><lightning:inputField fieldName="Name" aura:id="Name1" /></span>
+              </div>
+            <div class="slds-col slds-size_1-of-5">
+                <span><lightning:inputField fieldName="Description__c" aura:id="Description__c1" /></span>
+            </div>
+            <div class="slds-col slds-size_1-of-8">
+                <span><lightning:inputField fieldName="Due_Date__c" aura:id="DueDate__c1"/></span>
+            </div>
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:inputField fieldName="Project__c" onchange="{!c.getDeliverable_RecordEditForm_1}" aura:id="Project__c1" /></span>
+            </div>
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:select aura:id="Deliverables__c1" label="Deliverables" value="{!v.selected_Deliverable_1}" messageWhenValueMissing="Select the deliverable">
+                        <aura:iteration items="{!v.deliverableOptions_Project_1}" var="item">
+                            <option value="{!item.value}" label="{!item.label}" text="{!item.label}" selected="{!item.selected}"/>
+                        </aura:iteration>
+                      </lightning:select></span>
+            </div>
+            <!-- 
+              <div class="slds-col">
+                <span><lightning:inputField fieldName="Deliverables__c" aura:id="Deliverables__c1"  /></span>
+              </div>
+            -->
+              
+        </div>
+        
+
+     </lightning:recordEditForm>
+        
+        <lightning:recordEditForm aura:id="recordViewForm3"                                                                 
+                                  objectApiName="Task__c"
+                                  onsubmit="{!c.handleSubmit1}">
+        
+        <div class="slds-grid slds-gutters"> 
+            <div class="slds-col slds-size_1-of-10">
+                <span><lightning:inputField fieldName="Name" aura:id="Name3" /></span>
+              </div>
+            <div class="slds-col slds-size_1-of-5">
+                <span><lightning:inputField fieldName="Description__c" aura:id="Description__c3" /></span>
+            </div>
+            <div class="slds-col slds-size_1-of-8">
+                <span><lightning:inputField fieldName="Due_Date__c" aura:id="DueDate__c3"/></span>
+            </div>
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:inputField fieldName="Project__c" onchange="{!c.getDeliverable_RecordEditForm_3}" aura:id="Project__c3" /></span>
+              </div>
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:select aura:id="Deliverables__c3" label="Deliverables"  value="{!v.selected_Deliverable_3}" messageWhenValueMissing="Select the deliverable">
+                        <aura:iteration items="{!v.deliverableOptions_Project_3}" var="item">
+                            <option value="{!item.value}" label="{!item.label}" text="{!item.label}"/>
+                        </aura:iteration>
+                      </lightning:select></span>
+            </div>            
+            <!--
+              <div class="slds-col">
+                <span><lightning:inputField fieldName="Deliverables__c" aura:id="Deliverables__c3" /></span>
+              </div>
+            -->  
+        </div>
+        
+
+     </lightning:recordEditForm>
+        
+        <lightning:recordEditForm aura:id="recordViewForm4"                                                                 
+                                                              objectApiName="Task__c"
+                                                              onsubmit="{!c.handleSubmit1}">
+        
+        <div class="slds-grid slds-gutters"> 
+            <div class="slds-col slds-size_1-of-10">
+                <span><lightning:inputField fieldName="Name" aura:id="Name4" /></span>
+              </div>
+            <div class="slds-col slds-size_1-of-5">
+                <span><lightning:inputField fieldName="Description__c" aura:id="Description__c4" /></span>
+              </div>  
+            <div class="slds-col slds-size_1-of-8">
+                <span><lightning:inputField fieldName="Due_Date__c" aura:id="DueDate__c4"/></span>
+            </div>            
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:inputField fieldName="Project__c" onchange="{!c.getDeliverable_RecordEditForm_4}" aura:id="Project__c4" /></span>
+              </div>
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:select aura:id="Deliverables__c4" label="Deliverables"  value="{!v.selected_Deliverable_4}" messageWhenValueMissing="Select the deliverable">
+                        <aura:iteration items="{!v.deliverableOptions_Project_4}" var="item">
+                            <option value="{!item.value}" label="{!item.label}" text="{!item.label}"/>
+                        </aura:iteration>
+                      </lightning:select></span>
+            </div>            
+            <!--
+              <div class="slds-col">
+                <span><lightning:inputField fieldName="Deliverables__c" aura:id="Deliverables__c4" /></span>
+              </div>
+            -->
+              
+        </div>
+        
+            <lightning:recordEditForm aura:id="recordViewForm5"                                                                 
+                                      objectApiName="Task__c"
+                                      onsubmit="{!c.handleSubmit1}">
+        
+        <div class="slds-grid slds-gutters"> 
+            <div class="slds-col slds-size_1-of-10">
+                <span><lightning:inputField fieldName="Name" aura:id="Name5" /></span>
+              </div>
+            <div class="slds-col slds-size_1-of-5">
+                <span><lightning:inputField fieldName="Description__c" aura:id="Description__c5" /></span>
+              </div>  
+            <div class="slds-col slds-size_1-of-8">
+                <span><lightning:inputField fieldName="Due_Date__c" aura:id="DueDate__c5"/></span>
+            </div>            
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:inputField fieldName="Project__c" onchange="{!c.getDeliverable_RecordEditForm_5}" aura:id="Project__c5" /></span>
+              </div>
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:select aura:id="Deliverables__c5" label="Deliverables"  value="{!v.selected_Deliverable_5}" messageWhenValueMissing="Select the deliverable">
+                        <aura:iteration items="{!v.deliverableOptions_Project_5}" var="item">
+                            <option value="{!item.value}" label="{!item.label}" text="{!item.label}"/>
+                        </aura:iteration>
+                      </lightning:select></span>
+            </div>            
+            <!--
+              <div class="slds-col">
+                <span><lightning:inputField fieldName="Deliverables__c" aura:id="Deliverables__c5" /></span>
+              </div>
+            -->
+              
+        </div>
+        
+
+     </lightning:recordEditForm>
+
+     </lightning:recordEditForm>
+        
+        
+        <lightning:recordEditForm aura:id="recordViewForm2"                                                                 
+                                  objectApiName="Task__c"
+                                  onsubmit="{!c.handleSubmit1}">
+        
+        <div class="slds-grid slds-gutters"> 
+            <div class="slds-col slds-size_1-of-10">
+                <span><lightning:inputField fieldName="Name" aura:id="Name2" /></span>
+              </div>
+            <div class="slds-col slds-size_1-of-5">
+                <span><lightning:inputField fieldName="Description__c" aura:id="Description__c2" /></span>
+              </div>  
+            <div class="slds-col slds-size_1-of-8">
+                <span><lightning:inputField fieldName="Due_Date__c" aura:id="DueDate__c2"/></span>
+            </div>            
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:inputField fieldName="Project__c" onchange="{!c.getDeliverable_RecordEditForm_2}" aura:id="Project__c2" /></span>
+              </div>
+            <div class="slds-col slds-size_3-of-12">
+                <span><lightning:select aura:id="Deliverables__c2" label="Deliverables"  value="{!v.selected_Deliverable_2}" messageWhenValueMissing="Select the deliverable">
+                        <aura:iteration items="{!v.deliverableOptions_Project_2}" var="item">
+                            <option value="{!item.value}" label="{!item.label}" text="{!item.label}"/>
+                        </aura:iteration>
+                      </lightning:select></span>
+            </div>            
+            <!--
+              <div class="slds-col">
+                  <span><lightning:inputField fieldName="Deliverables__c" aura:id="Deliverables__c2" /></span>
+              </div>
+            -->
+
+              
+        </div>
+        <lightning:button variant="brand" label="Save and Submit" name="save" type="submit" onclick="{!c.handleSubmit1}"/>
+        <lightning:button variant="brand" label="Save and Add More" name="save" onclick="{!c.myfunc}"/>
+
+     </lightning:recordEditForm>
+        
+            </aura:if>
+    </table>
+        
+    </div>
+    
+    <!--<footer class="slds-modal__footer">-->
+                        <!--<button class="slds-button slds-button_neutral">Save</button>-->
+        				<!--<lightning:button variant="brand" label="Save" title="Save" onclick="{! c.HideMe }"/>-->
+        <!--				
+        <lightning:button variant="brand" label="Save and Submit" name="save" type="submit"/>
+        				<lightning:button variant="brand" label="Save and Add More" name="save" onclick="{!c.myfunc}"/>
+                        <lightning:button variant="brand" label="Cancel" title="Cancel" onclick="{! c.HideMe }"/>        				
+                    </footer>
+	-->
+    
+</aura:component>

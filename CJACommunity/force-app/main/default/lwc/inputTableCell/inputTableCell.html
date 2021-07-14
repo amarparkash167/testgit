@@ -1,0 +1,76 @@
+<template>
+    <template if:true={showcombo}>
+        <lightning-combobox 
+        name={ifield}
+        label={ifield}
+        variant="label-hidden" 
+        placeholder="-- Select --"
+        options={combooptions}
+        data-recordid={uuid}
+        value={value}
+        onchange={handleOptionsChange} ></lightning-combobox>
+    </template>
+
+    <template if:true={skillcombo}>
+        <lightning-combobox 
+        name={ifield}
+        label={ifield}
+        variant="label-hidden" 
+        placeholder="-- Select --"
+        options={combooptions}
+        data-recordid={uuid}
+        value={skillValue}
+        onchange={handleOptionsChange} ></lightning-combobox>
+    </template>
+    
+
+    <template if:true={showinputbox}>
+        <lightning-input 
+        variant="label-hidden" 
+        label={ifield} 
+        name={ifield} 
+        value={value} 
+        data-recordid={uuid}
+        type={type}
+        onchange={handleInputChange}></lightning-input>
+    </template>
+
+    <template if:true={showcheckedbox}>
+        <lightning-input 
+        variant="label-hidden" 
+        label={ifield} 
+        name={ifield} 
+        value={value} 
+        data-recordid={uuid}
+        type={type}
+        onchange={handleInputChange}
+        checked="checked"></lightning-input>
+    </template>
+
+    <template if:true={showtextarea}>
+        <lightning-textarea 
+        variant="label-hidden" 
+        label={ifield} 
+        name={ifield} 
+        value={value} 
+        data-recordid={uuid}
+        onchange={handleInputChange}></lightning-textarea>
+    </template>
+
+    <template if:true={showlookup}>
+            <lightning-input 
+            variant="label-hidden" 
+            label={ifield} 
+            name={ifield} 
+            value={value} 
+            data-recordid={uuid}
+            type='hidden'
+            onchange={handleInputChange}></lightning-input>
+
+            <c-lookup selection={initialSelection} errors={errors}
+            onsearch={handleSearch} onselectionchange={handleSelectionChange}
+            label="Search" placeholder="Search Task">
+            </c-lookup>
+
+        </template>
+</template>

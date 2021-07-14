@@ -1,0 +1,14 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="deliverable" type="Deliverable__c"/>
+    <lightning:layout class="slds-page-header slds-page-header--object-home">
+    <lightning:layoutItem >
+        <lightning:icon iconName="standard:task" alternativeText="Task and Task Assignment"/>
+    </lightning:layoutItem>
+    <lightning:layoutItem padding="horizontal-small">
+	<div class="page-section page-header">
+		<h1 class="slds-text-heading--label">Task and Task Assignment</h1>
+		<h3 class="slds-page-header__name-meta">Project: {!v.deliverable.Project__r.Name} , Deliverable: {!v.deliverable.Name}  </h3>
+    </div>
+    </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

@@ -1,0 +1,213 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="ClientOnBoardingController">
+    
+    
+    <aura:attribute name="RecordTypeMap" type="Map"/>
+    <aura:attribute name="account" type="Account" 
+                    default="{'sobjectType':'Account','Name':'','Type':'', 'Current_AE__c':'', 'Website':'',
+                             'Industry':'','Existing_Salesforce_customer__c':false,'CurrencyIsoCode':''}"/>
+    <aura:attribute name="con" type="Contact" 
+                    default="{'sobjectType':'Contact','FirstName':'','LastName':'', 'Email':''}"/>
+    <aura:attribute name="opp" type="Opportunity" 
+                    default="{'sobjectType':'Opportunity','Name':'', 'StageName__c':'',
+                             'Close_Date__c':'','Engagement_Type__c':'', 'Amount__c':'','Type__c':'','RecordTypeId':'','CurrencyIsoCode':''}"/>
+    <aura:attribute name="newTask" type="Task" default="{ 'sobjectType': 'Task' }" />
+    <aura:attribute name="subjectList" type="String[]"/>
+    <aura:attribute name="selectedSubject" type="String"/>
+    <aura:attribute name="description" type="String"/>
+    <aura:attribute name="Spinner" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.Init}"/>
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>-->
+    <!--Accounts Section Start-->
+    
+    <lightning:card aura:id="invoiceFormCard" title="">
+         <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="spinner" role="alert">
+                <lightning:spinner alternativeText="Loading" size="Large" />
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end-->
+        <div class="slds-section slds-is-open" aura:id="AccountSection">
+            <!--Header-->
+            <h3 class="slds-section__title">
+                <button aria-controls="accountsList" class="slds-button slds-section__title-action">
+                    <span onclick="{!c.toggleSection}" data-auraId="AccountSection">
+                        <lightning:icon iconName="utility:switch"
+                                        size="x-small"
+                                        class="slds-section__title-action-icon slds-button__icon_left"
+                                        alternativeText="button icon" 
+                                        />
+                    </span>
+                    <span class="slds-truncate" title="Account">Account</span>
+                </button>
+            </h3>
+            <!--section body-->
+            
+            <div class="slds-section__content entityPanel slds-box_border expand slds-card" id="AccountList">
+                
+                <div>
+                    <lightning:recordEditForm aura:id="recordEditForm" 
+                                              objectApiName="Account">
+                        <div class="slds-grid">
+                            <div class="slds-col">
+                               	<lightning:inputField fieldName="Name" name="accountNameInput" required="true" value="{!v.account.Name}" />
+                                <lightning:inputField fieldName="Type" name="accountTypeInput" value="{!v.account.Type}" />
+                                <lightning:inputField fieldName="Current_AE__c" name="accountCurrentAEInput" value="{!v.account.Current_AE__c}" />
+                                <lightning:inputField fieldName="Existing_Salesforce_customer__c" name="accountUsingSalesforceInput" 
+                                                      value="{!v.account.Existing_Salesforce_customer__c}" />
+                            </div> 
+                            <div class="slds-col">
+                                <!--Add following to new column-->
+                                <lightning:inputField fieldName="Website" name="accountWebsiteInput" value="{!v.account.Website}" />
+                                <lightning:inputField fieldName="Industry" name="accountIndustryInput" value="{!v.account.Industry}" />
+                                <lightning:inputField fieldName="BillingCountry" name="accountBillingCountry" value="{!v.account.BillingCountry}"/> 
+                  				<lightning:inputField fieldName="CurrencyIsoCode" name="accountCurrency" value="{!v.account.CurrencyIsoCode}" required="true"/> 
+                            </div>
+                        </div>
+                    </lightning:recordEditForm>
+                </div>
+            </div>
+            <div class="slds-col">
+                
+                
+            </div>
+        </div>
+        <!--Accounts Section End-->
+        
+        <!--Contacts Section Start-->  
+        <div class="slds-section slds-is-open" aura:id="ContactSection">
+            <!--section header-->
+            <h3 class="slds-section__title">
+                <button aria-controls="ContactId" class="slds-button slds-section__title-action">
+                    <span onclick="{!c.toggleSection}" data-auraId="ContactSection">
+                        <lightning:icon iconName="utility:switch"
+                                        alternativeText="button icon"
+                                        size="x-small"
+                                        class="slds-section__title-action-icon slds-button__icon_left"/>
+                    </span>
+                    <span class="slds-truncate" title="Contact">Contact</span>
+                </button>
+            </h3>
+            <!--section body-->
+            <div class="slds-section__content entityPanel slds-box_border expand slds-card" id="ContactId">
+                
+                <div>
+                    <lightning:recordEditForm objectApiName="Contact">
+                        <div class="slds-grid">
+                            <div class="slds-col">
+                                <lightning:inputField fieldName="Title" name='title' value="{!v.con.Title}"/>
+                                <div style="display:none">
+                                    <lightning:inputField fieldName="Name" name='name' value="{!v.con.Name}"/>
+                                </div>
+                                <!--<lightning:inputField fieldName="Salutation" name='salutation' value="{!v.con.Salutation}"/>-->
+                                <lightning:inputField fieldName="FirstName" name='first_name' value="{!v.con.FirstName}"/>
+                                <lightning:inputField fieldName="LastName" name='last_name' value="{!v.con.LastName}"/>
+                            </div>        
+                            <div class="slds-col">
+                                <lightning:inputField fieldName="Email" value="{!v.con.Email}"/>
+                                <lightning:inputField fieldName="Phone" value="{!v.con.Phone}"/>
+                                <lightning:inputField fieldName="MobilePhone" value="{!v.con.MobilePhone}"/>
+                            </div>
+                            
+                        </div>
+                    </lightning:recordEditForm>
+                </div>
+                
+            </div>
+        </div>
+        <!--Contact Section End-->
+        
+        <!--Opportunity Section Start-->  
+        <div class="slds-section slds-is-open" aura:id="OpportunitySection">
+            <!--section header-->
+            <h3 class="slds-section__title">
+                <button aria-controls="OpportunityId" class="slds-button slds-section__title-action">
+                    <span onclick="{!c.toggleSection}" data-auraId="OpportunitySection">
+                        <lightning:icon iconName="utility:switch"
+                                        alternativeText="button icon"
+                                        size="x-small"
+                                        class="slds-section__title-action-icon slds-button__icon_left"/>
+                    </span>
+                    <span class="slds-truncate" title="Opportunity">Opportunity</span>
+                </button>
+            </h3>
+            <!--section body-->
+            <div class="slds-section__content entityPanel slds-box_border expand slds-card" id="OpportunityId">
+                
+                <div>
+                    <lightning:recordEditForm aura:id="recordEditForm" 
+                                              objectApiName="Opportunity">
+                        <div class="slds-grid">
+                            <div class="slds-col">
+                                <lightning:inputField fieldName="Name" name="oppNameInput" required="true" value="{!v.opp.Name}" />
+                                <lightning:inputField fieldName="StageName" name="oppStageInput" required="true" value="{!v.opp.StageName}" />
+                                <lightning:inputField fieldName="CloseDate" name="oppCloseDateInput" required="true" value="{!v.opp.CloseDate}" />
+                                <lightning:select aura:id="RecordTypePicklist" value="{!v.opp.RecordTypeId}" onchange="{!c.handleRecordOnChange}" name="oppRecordType" label="Opportunity Record Type" required="true">
+                                    <option value="">--None--</option>
+                                    <aura:iteration items="{!v.RecordTypeMap}" var="ind" indexVar="key">
+                                   <option text="{!ind.value}" value="{!ind.key}" selected="{!ind.key==v.opp.RecordTypeId}" />
+                                   </aura:iteration>
+                               </lightning:select>  
+                            </div>  
+                            <div class="slds-col">
+                                <lightning:inputField fieldName="Engagement_Type__c" name="oppEngagementTypeInput" value="{!v.opp.Engagement_Type__c}" />
+                                <lightning:inputField fieldName="Amount" name="oppAmountInput" value="{!v.opp.Amount}" />
+                                <lightning:inputField fieldName="Type" name="oppTypeInput" value="{!v.opp.Type}" />
+                                <lightning:inputField fieldName="CurrencyIsoCode" name="oppCurrencyInput" value="{!v.opp.CurrencyIsoCode}" required="true"/>
+                            </div>
+                        </div>
+                    </lightning:recordEditForm>
+                </div>
+                
+            </div>
+        </div>
+        <!--Opportunity Section End-->
+        
+        <!--Activity Section Start-->  
+        <div class="slds-section slds-is-open" aura:id="ActivitySection">
+            <!--section header-->
+            <h3 class="slds-section__title">
+                <button aria-controls="OpportunityId" class="slds-button slds-section__title-action">
+                    <span onclick="{!c.toggleSection}" data-auraId="ActivitySection">
+                        <lightning:icon iconName="utility:switch"
+                                        alternativeText="button icon"
+                                        size="x-small"
+                                        class="slds-section__title-action-icon slds-button__icon_left"/>
+                    </span>
+                    <span class="slds-truncate" title="Activity">Activity</span>
+                </button>
+            </h3>
+            <!--section body-->
+            <div class="slds-section__content entityPanel slds-box_border expand slds-card" id="ActivityId">
+                
+                <div class="slds-p-horizontal_xx-small" >                        
+                    <div class="slds-grid">
+                        <div class="slds-col slds-p-right_x-small">
+                            <lightning:input type="Text" label="Subject" name="subject" required="true" placeholder="Enter Subject" value="{!v.selectedSubject}"/>
+                            <!--<lightning:select label="Subject" name="status" value="{!v.selectedSubject}" required="true">
+                                <option value="{!null}">Please select</option>
+                                <aura:iteration items="{!v.subjectList}" var="subject">
+                                    <option value="{!subject}">{!subject}</option>
+                                </aura:iteration>
+                            </lightning:select>-->
+                        </div>  
+                        <div class="slds-col">
+                            <lightning:textarea name="taskDescriptionInput" label="Comments" value="{!v.description}" />
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!--Activity Section End-->
+    </lightning:card>
+    <div class="slds-text-align_center">
+        <lightning:button label="Create Client" 
+                          class="slds-m-right_x-small"
+                          variant="brand"
+                          onclick="{!c.createClientObjects}"
+                          />
+    </div>
+</aura:component>

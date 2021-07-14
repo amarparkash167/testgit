@@ -1,0 +1,101 @@
+<template>
+		
+ 
+
+    <lightning-card class="slds-card_boundary" icon-name="custom:custom13">
+            <h1 slot="title" class="slds-text-heading_small">
+                    {title}
+            </h1>
+
+            <!--
+        <canvas class="confettiCanvas" id="canvas" lwc:dom="manual"></canvas>
+        <template if:true={showspinner}>
+            <div class="" style="text-align: center">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+    
+    
+      -->
+    
+        <template if:true={showcomp}>
+    
+            
+    
+    
+        <div class="slds-box">  
+                
+                <c-lwclookup lookup-label="Deliverable Name" object-api-name="Task__c" icon-name="standard:task"  
+                  onrecordselection={onDeliverableSelection}      onrecordremove={handlercancelLookup} oninitialselection={addRowOnBlankSelect}
+                  ></c-lwclookup>  
+              </div>  -
+              
+            
+            <!--
+              <div class="slds-box">  
+                Selected Deliverable Name : {DeliverableName}  
+                Selected Deliverable Id  : {DeliverableRecordId}  
+              </div>  
+        
+    </br>
+    </br>
+    </br>
+    
+    <template if:true={DeliverableRecordId}>-->
+     
+      <template if:true={DeliverableRecordId}>
+
+      <div  class="multiEditTable slds-hide">
+
+
+      <c-multi-edit-table-global 
+                column-list='{optionsarr}'
+                title='{title}'
+                resources='{resources}'
+                taskstatuses='{taskstatuses}'
+                >
+            </c-multi-edit-table-global>
+          </div>
+    </template>
+     
+     <!--       <h1 title="Chatter Settings">
+                <lightning-input type="checkbox" label="Post on Chatter (auto)" value={chatterpost} name="chatterpost" onchange={handleCheckboxChange}></lightning-input>
+    
+                <template if:true={showchatter}>
+                    <lightning-input-rich-text
+                        value={richtext}
+                        label='Chatter Post (Additinal Notes)'
+                        placeholder='Chatter Post (Additinal Notes)'
+                        onchange={handleChange}
+                    ></lightning-input-rich-text>
+                </template>      
+            </h1>-->
+          
+    </template>
+
+    <template if:true={showsuccess}>
+      <div class="slds-p-horizontal_small  slds-text-heading_large slds-text-align_center slds-text-color_success">
+            {message}</br>
+      </div>
+    
+      </template>
+            
+    <div class="hideSubmitButton slds-hide">
+      <div class="slds-clearfix slds-card__footer ">
+                    <div slot="footer" class="slds-float_right">
+                            <lightning-button  slot="actions" variant="brand" label="Submit" onclick={submit} ></lightning-button>
+                    </div>
+            </div>
+      </div>
+
+      <template if:true={showspinner}>
+        <div class="" style="text-align: center">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+
+    </lightning-card> 
+  
+</template>
+  
+    </template>

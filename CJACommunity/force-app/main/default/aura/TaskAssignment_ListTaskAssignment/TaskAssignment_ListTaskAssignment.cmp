@@ -1,0 +1,65 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+	<!--Attribute to store single "Task Assignment" object instance-->
+    <aura:attribute name="taskAssignmentInstance" type="Task_Assignment__c" default="{ 'sobjectType':'Task_Assignment__c'}" />
+    <!--Attribute to store Index of Particular Instance -->
+    <aura:attribute name="rowIndex" type="String"/>
+    <!--Attribute to store ProjectId-->
+    <aura:attribute name="projectId" type="String"/>
+    <!--Attribute to store TaskId-->
+    <aura:attribute name="taskId" type="String" access="global" default=""/>
+    <!-- TaskAssignment List -->
+    <aura:attribute name="taskAssignmentList" type="Task_Assignment__c[]"/>
+   
+    <!-- <aura:handler name="init" value="this" action="{!c.doInit}"/>  -->
+    
+    <!-- Create passParameters event Handle for Registered event: passParametersToChild-->
+    <aura:handler event="c:passParameters" action="{!c.changeOfSelectedTask}"/>
+    
+    <!-- Method to call Init Fuction again-->
+    <aura:method name="childUpdate" action="{!c.childUpdate}" description="Runs the init method again" access="global"/>
+    
+    <!-- Register 2 Lightning Event for handle add or Delete rows on Parent Component  -->
+    <aura:registerEvent name="AddRowEvent" type="c:TaskAssignment_AddRowEvent"/>
+    <aura:registerEvent name="DeleteRowEvent" type="c:TaskAssignment_DeleteRowEvent"/>
+                
+     <lightning:recordEditForm 
+            onsubmit="{!c.Save}"
+            objectApiName="Task_Assignment__c" aura:id="taskAssignRecord">
+    <tr class="slds-grid"> <!-- slds-text-title_caps -->
+       <lightning:messages />  
+      <td class=""> <div> {!v.rowIndex + 1} </div> </td>
+      <!-- the messages component is for error messages -->
+      <td class="slds-size_3-of-8"><lightning:inputField value="{!v.taskAssignmentInstance.Project_Resource__c}" fieldName="Project_Resource__c" /></td> 
+      <td class="slds-size_1-of-12"><lightning:inputField value="{!v.taskAssignmentInstance.Estimated_Hour__c}" fieldName="Estimated_Hour__c" /></td>          
+      <td class="slds-size_1-of-8"><lightning:inputField value="{!v.taskAssignmentInstance.Start_Date__c}" fieldName="Start_Date__c" /></td> 
+      <td class="slds-size_1-of-8"><lightning:inputField value="{!v.taskAssignmentInstance.End_Date__c}" fieldName="End_Date__c" /></td> 
+      <td class="slds-size_3-of-12"><lightning:inputField value="{!v.taskAssignmentInstance.Status__c}" fieldName="Status__c" /></td>
+ 	  <td>
+          <aura:if isTrue="{!v.rowIndex == 0}">
+              <a onclick="{!c.addRow}">
+                  <lightning:icon iconName="utility:add" size="small" alternativeText="Add"/>
+				  <span class="slds-assistive-text">Add</span>
+		      </a>
+              <a onclick="{!c.deleteRow}">
+                  <lightning:icon iconName="utility:delete" variant="error" size="small" alternativeText="Delete"/> 
+                  <span class="slds-assistive-text">Delete</span>
+		      </a>              
+              <aura:set attribute="else">
+			  <a onclick="{!c.deleteRow}">
+              <!--
+                  <lightning:icon iconName="utility:add" size="small" alternativeText="Add"/>
+				  <span class="slds-assistive-text">Add</span>
+              -->
+                  <lightning:icon iconName="utility:delete" variant="error" size="small" alternativeText="Delete"/> 
+                  <span class="slds-assistive-text">Delete</span>
+              </a>                 
+              </aura:set>
+          </aura:if>
+       </td>       
+       <lightning:inputField style="display:none;" fieldName="Task__c" aura:id="inputTask" value="{v.taskId}"/>
+       <lightning:inputField style="display:none;" fieldName="Id" value="{v.taskAssignmentInstance.Id}"/> 
+    </tr>
+</lightning:recordEditForm>
+
+</aura:component>

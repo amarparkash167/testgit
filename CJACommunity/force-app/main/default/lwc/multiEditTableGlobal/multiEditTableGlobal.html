@@ -1,0 +1,52 @@
+<template>
+  
+<!--         <h1 slot="title">{title}</h1> -->
+        <div class="slds-card__body slds-card__body_inner">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-bottom_large"> 
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <template for:each={columns} for:item="column">
+                            <template if:false={column.visible}>
+                                <th key={column.apiName}><div class="slds-truncate ">{column.label}</div></th>
+                            </template>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody  class="allRows">
+                    <template for:each={rows} for:item="row" for:index="index">
+                        <tr class="inputRows" key={row.uuid}>
+                            <template for:each={row.columns} for:item="column">
+                                <td key={column.apiName} class={column.apiName}>
+                                        <c-input-table-cell-global record={row} options={column.options} type={column.type} field={column.apiName} inputval={column.value}></c-input-table-cell-global>
+                                </td>
+                            </template>
+                            <td>
+                                    <lightning-button-group>
+                                            <lightning-button-icon value={index} variant="brand"  onclick={addRow} icon-name="utility:add"    alternative-text="Add"   class="slds-m-left_xx-small"></lightning-button-icon>
+                                            <lightning-button-icon icon-name="utility:copy" variant="Neutral" alternative-text="Clone" onclick={cloneRow} value={index}> </lightning-button-icon>
+                                            <template if:true={index}>
+                                                <lightning-button-icon value={index} variant="destructive" label="Delete" onclick={removeRow} icon-name="utility:delete"    alternative-text="Delete"   class="slds-m-left_xx-small"></lightning-button-icon>
+                                            </template>
+                                        </lightning-button-group>
+
+                                <!-- <lightning-button value={index} variant="brand" label="Delete" onclick={removeRow}></lightning-button> -->
+                                <!--<lightning-button-icon value={index} variant="destructive" label="Delete" onclick={removeRow} icon-name="utility:delete"    alternative-text="Delete"   class="slds-m-left_xx-small"></lightning-button-icon>-->
+                                
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <!--<lightning-button variant="brand" label="Add" onclick={addRow}></lightning-button>-->
+                            <!-- <lightning-button-icon value={index} variant="brand"  onclick={addRow} icon-name="utility:add"    alternative-text="Add"   class="slds-m-left_xx-small"></lightning-button-icon> -->
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+
+
+</template>
